@@ -1,17 +1,25 @@
 variable "azs" {
-  description = "Availability zones"
+  description = "List of availability zones names or IDs in the region"
   type        = list(string)
+  nullable    = false
 }
 
 variable "cidr" {
-  description = "VPC CIDR block"
+  description = "The IPv4 CIDR block for the VPC"
   type        = string
   default     = "10.0.0.0/16"
+  nullable    = false
+
+  validation {
+    condition     = can(cidrnetmask(var.cidr))
+    error_message = "VPC CIDR must be a valid IPv4 CIDR block."
+  }
 }
 
 variable "environment" {
   description = "Environment name (development1–development12, staging, pre-production, production)"
   type        = string
+  nullable    = false
 
   validation {
     condition = (
@@ -25,26 +33,31 @@ variable "environment" {
 }
 
 variable "private_subnets" {
-  description = "Private subnet CIDR blocks"
+  description = "List of private subnet CIDR blocks"
   type        = list(string)
+  default     = []
 }
 
 variable "public_subnets" {
-  description = "Public subnet CIDR blocks"
+  description = "List of public subnet CIDR blocks"
   type        = list(string)
+  default     = []
 }
 
 variable "trusted_subnets" {
-  description = "Trusted subnet CIDR blocks"
+  description = "List of trusted subnet CIDR blocks"
   type        = list(string)
+  default     = []
 }
 
 variable "private_subnet_tags" {
-  description = "Private subnet tags."
-  type        = map(any)
+  description = "Additional tags for the private subnets"
+  type        = map(string)
+  default     = {}
 }
 
 variable "public_subnet_tags" {
-  description = "Public subnet tags."
-  type        = map(any)
+  description = "Additional tags for the public subnets"
+  type        = map(string)
+  default     = {}
 }
