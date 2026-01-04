@@ -4,11 +4,12 @@ locals {
   project_vars     = read_terragrunt_config(find_in_parent_folders("project.hcl"))
   region_vars      = read_terragrunt_config(find_in_parent_folders("region.hcl"))
 
-  aws_profile = local.account_vars.locals.profile
-  aws_region  = local.region_vars.locals.region
-  environment = local.environment_vars.locals.environment
-  project     = local.project_vars.locals.project
-  team_owner  = local.account_vars.locals.team_owner
+  aws_account_id = local.account_vars.locals.id
+  aws_profile    = local.account_vars.locals.profile
+  aws_region     = local.region_vars.locals.region
+  environment    = local.environment_vars.locals.environment
+  project        = local.project_vars.locals.project
+  team_owner     = local.account_vars.locals.team_owner
 }
 
 generate "provider" {
@@ -48,7 +49,7 @@ generate "backend" {
     backend "s3" {
       bucket       = "music-homelab"
       encrypt      = true
-      key          = "${path_relative_to_include()}/terraform.tfstate"
+      key          = "${local.aws_account_id}/${local.aws_region}/${local.environment}/${local.project}/${basename(get_terragrunt_dir())}/terraform.tfstate"
       profile      = "${local.aws_profile}"
       region       = "${local.aws_region}"
       use_lockfile = true
