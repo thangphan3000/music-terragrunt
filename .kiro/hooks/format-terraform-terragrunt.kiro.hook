@@ -1,0 +1,22 @@
+{
+  "enabled": false,
+  "name": "Auto Format Terraform",
+  "description": "Automatically formats Terraform (.tf) and Terragrunt (.hcl) files when they are edited and content has changed to maintain consistent code style",
+  "version": "1",
+  "when": {
+    "type": "fileEdited",
+    "patterns": [
+      "*.tf",
+      "*.hcl"
+    ],
+    "conditions": [
+      {
+        "type": "contentChanged"
+      }
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "Format the Terraform/Terragrunt code that was just edited using `terraform fmt` for .tf files or `terragrunt hcl fmt` for .hcl files. Ensure the code follows proper formatting standards and fix any formatting issues."
+  }
+}
