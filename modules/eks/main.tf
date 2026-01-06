@@ -23,8 +23,7 @@ provider "helm" {
     exec = {
       api_version = "client.authentication.k8s.io/v1beta1"
       command     = "aws"
-      # This requires the awscli to be installed locally where Terraform is executed
-      args = ["eks", "get-token", "--cluster-name", module.eks.cluster_name]
+      args        = ["eks", "get-token", "--cluster-name", module.eks.cluster_name]
     }
   }
 }
@@ -60,14 +59,12 @@ module "eks" {
 
   eks_managed_node_groups = {
     karpenter = {
-      ami_type       = "BOTTLEROCKET_x86_64"
-      instance_types = ["t3.small", "t3.medium"]
-
-      min_size      = 1
-      max_size      = 3
-      desired_size  = 1
-      capacity_type = "ON_DEMAND"
-
+      ami_type                   = "BOTTLEROCKET_x86_64"
+      instance_types             = ["t3.small", "t3.medium"]
+      min_size                   = 1
+      max_size                   = 3
+      desired_size               = 1
+      capacity_type              = "ON_DEMAND"
       use_custom_launch_template = false
 
       labels = {
