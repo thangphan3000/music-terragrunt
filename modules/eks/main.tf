@@ -67,6 +67,14 @@ module "eks" {
       capacity_type              = "ON_DEMAND"
       use_custom_launch_template = false
 
+      taints = {
+        addons = {
+          key    = "CriticalAddonsOnly"
+          value  = "effect"
+          effect = "NO_SCHEDULE"
+        }
+      }
+
       labels = {
         # Used to ensure Karpenter runs on nodes that it does not manage
         "karpenter.sh/controller" = "true"
