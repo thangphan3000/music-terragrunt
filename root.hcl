@@ -22,6 +22,12 @@ generate "provider" {
         source  = "hashicorp/aws"
         version = "6.27.0"
       }
+      %{if strcontains(get_terragrunt_dir(), "eks")}
+      kubectl = {
+        source = "gavinbunney/kubectl"
+        version = "1.19.0"
+      }
+      %{endif}
     }
   }
 
