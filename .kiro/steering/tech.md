@@ -29,7 +29,7 @@ terragrunt apply
 terragrunt destroy
 
 # Format Terraform code
-terragrunt fmt
+terragrunt hcl fmt .
 
 # Validate configuration
 terragrunt validate
