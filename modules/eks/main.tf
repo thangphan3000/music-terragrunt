@@ -230,3 +230,15 @@ resource "kubectl_manifest" "karpenter_node_pool" {
     kubectl_manifest.karpenter_node_class
   ]
 }
+
+resource "helm_release" "argocd" {
+  name             = "argocd"
+  repository       = "https://argoproj.github.io/argo-helm"
+  chart            = "argo-cd"
+  namespace        = "argocd"
+  create_namespace = true
+  version          = "8.5.8"
+  values           = [file("helms-value/argocd.yaml")]
+
+  depends_on = [kubectl_manifest.karpenter_node_pool]
+}
