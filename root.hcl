@@ -55,7 +55,7 @@ generate "backend" {
     backend "s3" {
       bucket       = "music-homelab"
       encrypt      = true
-      key          = "${local.aws_account_id}/${local.aws_region}/${local.environment}/${local.project}/${basename(get_terragrunt_dir())}/terraform.tfstate"
+      key          = "${path_relative_to_include()}/terraform.tfstate"
       profile      = "${local.aws_profile}"
       region       = "${local.aws_region}"
       use_lockfile = true
