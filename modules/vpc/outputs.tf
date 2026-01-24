@@ -8,9 +8,9 @@ output "public_subnet_ids" {
   value       = [for subnet in aws_subnet.public : subnet.id]
 }
 
-output "trusted_subnet_ids" {
+output "database_subnet_ids" {
   description = "Trusted subnet IDs"
-  value       = [for subnet in aws_subnet.trusted : subnet.id]
+  value       = [for subnet in aws_subnet.database : subnet.id]
 }
 
 output "vpc_id" {

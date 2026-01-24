@@ -44,8 +44,8 @@ variable "public_subnets" {
   default     = []
 }
 
-variable "trusted_subnets" {
-  description = "List of trusted subnet CIDR blocks"
+variable "database_subnets" {
+  description = "List of database subnet CIDR blocks"
   type        = list(string)
   default     = []
 }
