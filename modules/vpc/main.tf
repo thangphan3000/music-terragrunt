@@ -43,15 +43,15 @@ resource "aws_subnet" "private" {
   )
 }
 
-resource "aws_subnet" "database" {
-  count = length(var.database_subnets)
+resource "aws_subnet" "trusted" {
+  count = length(var.trusted_subnets)
 
   availability_zone = var.azs[count.index]
-  cidr_block        = var.database_subnets[count.index]
+  cidr_block        = var.trusted_subnets[count.index]
   vpc_id            = aws_vpc.this.id
 
   tags = merge(
-    { Name = "${var.environment}-database-${var.azs[count.index]}" },
+    { Name = "${var.environment}-trusted-${var.azs[count.index]}" },
     var.public_subnet_tags
   )
 }
@@ -123,7 +123,7 @@ resource "aws_route_table" "private" {
   }
 }
 
-resource "aws_route_table" "database" {
+resource "aws_route_table" "trusted" {
   vpc_id = aws_vpc.this.id
 
   route {
@@ -132,7 +132,7 @@ resource "aws_route_table" "database" {
   }
 
   tags = {
-    Name = "${var.environment}-database"
+    Name = "${var.environment}-trusted"
   }
 }
 
@@ -150,9 +150,9 @@ resource "aws_route_table_association" "private" {
   route_table_id = aws_route_table.private.id
 }
 
-resource "aws_route_table_association" "database" {
-  count = length(var.database_subnets)
+resource "aws_route_table_association" "trusted" {
+  count = length(var.trusted_subnets)
 
-  subnet_id      = aws_subnet.database[count.index].id
-  route_table_id = aws_route_table.database.id
+  subnet_id      = aws_subnet.trusted[count.index].id
+  route_table_id = aws_route_table.trusted.id
 }
