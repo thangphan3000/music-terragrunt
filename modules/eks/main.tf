@@ -238,7 +238,7 @@ resource "helm_release" "argocd" {
   namespace        = "argocd"
   create_namespace = true
   version          = "8.5.8"
-  values           = [file("helms-value/argocd.yaml")]
+  values           = [file("helms_value/argocd.yaml")]
 
   depends_on = [kubectl_manifest.karpenter_node_pool]
 }
