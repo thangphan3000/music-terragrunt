@@ -73,6 +73,7 @@ resource "aws_internet_gateway" "this" {
 # ------------------------------------------------------------------------------
 
 resource "aws_eip" "this" {
+  count  = var.is_enable_nat ? 1 : 0
   domain = "vpc"
 
   tags = {
@@ -83,7 +84,8 @@ resource "aws_eip" "this" {
 }
 
 resource "aws_nat_gateway" "this" {
-  allocation_id = aws_eip.this.id
+  count         = var.is_enable_nat ? 1 : 0
+  allocation_id = aws_eip.this[0].id
   subnet_id     = aws_subnet.public[0].id
 
   tags = {
@@ -115,7 +117,8 @@ resource "aws_route_table" "private" {
 
   route {
     cidr_block     = "0.0.0.0/0"
-    nat_gateway_id = aws_nat_gateway.this.id
+    gateway_id     = var.is_enable_nat ? null : aws_internet_gateway.this.id
+    nat_gateway_id = var.is_enable_nat ? aws_nat_gateway.this[0].id : null
   }
 
   tags = {
@@ -128,7 +131,8 @@ resource "aws_route_table" "trusted" {
 
   route {
     cidr_block     = "0.0.0.0/0"
-    nat_gateway_id = aws_nat_gateway.this.id
+    gateway_id     = var.is_enable_nat ? null : aws_internet_gateway.this.id
+    nat_gateway_id = var.is_enable_nat ? aws_nat_gateway.this[0].id : null
   }
 
   tags = {

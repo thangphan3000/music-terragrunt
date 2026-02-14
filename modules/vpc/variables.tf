@@ -61,3 +61,9 @@ variable "public_subnet_tags" {
   type        = map(string)
   default     = {}
 }
+
+variable "is_enable_nat" {
+  description = "Enable NAT GW"
+  type        = bool
+  default     = true
+}
